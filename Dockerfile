@@ -2,7 +2,7 @@
 FROM openjdk:17 AS BUILD_IMAGE
 
 # Install Maven
-RUN apt update && apt install maven -y
+RUN apt-get update && apt-get install maven git -y
 
 # Clone the repository and build the project
 RUN git clone https://github.com/devopshydclub/vprofile-project.git
