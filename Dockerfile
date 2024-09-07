@@ -2,7 +2,7 @@
 FROM openjdk:17-slim AS build_image
 
 # Install Maven
-RUN sudo apt update && sudo apt install maven git -y
+RUN apt update && apt install maven git -y
 
 # Clone the repository and build the project
 RUN git clone https://github.com/devopshydclub/vprofile-project.git
