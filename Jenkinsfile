@@ -57,7 +57,7 @@ pipeline {
                     -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                     -Dsonar.organization=${SONAR_ORG} \
                     -Dsonar.host.url=${HOST_URL} \
-                    -Dsonar.login=${SONAR_TOKEN}
+                    -Dsonar.login=${SONAR_TOKEN} \
                     -Dsonar.sources=src/ \
                     -Dsonar.junit.reportsPath=target/surefire-reports/ \
                     -Dsonar.jacoco.reportsPath=target/jacoco.exec \
