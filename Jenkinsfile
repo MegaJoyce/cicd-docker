@@ -58,7 +58,8 @@ pipeline {
                     -Dsonar.organization=${SONAR_ORG} \
                     -Dsonar.host.url=${HOST_URL} \
                     -Dsonar.login=${SONAR_TOKEN} \
-                    -Dsonar.sources=src/ \
+                    -Dsonar.sources=src/main/ \
+                    -Dsonar.test=src/test/ \
                     -Dsonar.junit.reportsPath=target/surefire-reports/ \
                     -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                     -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
