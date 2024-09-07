@@ -51,7 +51,7 @@ pipeline {
 
         stage('CODE ANALYSIS with SONARQUBE') {
             steps {
-                withSonarQubeEnv('sonar_cloud') { // 'sonar-pro' should be the name of the SonarCloud instance in Jenkins
+                withSonarQubeEnv('SonarCloud') { // 'sonar-pro' should be the name of the SonarCloud instance in Jenkins
                     sh '''
                     mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
                     -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
