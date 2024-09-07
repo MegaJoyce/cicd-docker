@@ -45,16 +45,16 @@ pipeline {
         }
 
         stage('CODE ANALYSIS with SONARQUBE') {
+            environment {
+                scannerHome = tool 'mysonarscanner4'
+            }
             steps {
-                environment {
-                    scannerHome = tool 'mysonarscanner4'
-                }
                 steps {
                     withSonarQubeEnv('sonar-pro') {
                         sh '''
                     ${scannerHome}/bin/sonar-scanner \
                     -Dsonar.host.url=sonarcloud.io \
-                    -Dsonar.login=${SONAR_TOKEN} \
+                    -Dsonar.login=credentials('sonarcloudCred') \
                     -Dsonar.organization=joyceprofile-qb \
                     -Dsonar.projectKey=joyceprofile-qb_jprofile \
                     -Dsonar.sources=src/ \
@@ -79,7 +79,7 @@ pipeline {
             }
         }
 
-        stage(Upload image""){
+        stage("Upload image"){
             steps {
                 script {
                     docker.withRegistry('', registryCredential){
@@ -90,7 +90,7 @@ pipeline {
             }
         }
 
-        stage(“Remove Unused docker iamge){
+        stage("Remove Unused docker image"){
             steps {
                 sh "docker rmi $registry:v$BUILD_NUMBER"
             }
