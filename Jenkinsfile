@@ -49,24 +49,22 @@ pipeline {
                 scannerHome = tool 'mysonarscanner4'
             }
             steps {
-                step {
-                    withSonarQubeEnv('sonar-pro') {
-                        sh '''
-                    ${scannerHome}/bin/sonar-scanner \
-                    -Dsonar.host.url=sonarcloud.io \
-                    -Dsonar.login=credentials('sonarcloudCred') \
-                    -Dsonar.organization=joyceprofile-qb \
-                    -Dsonar.projectKey=joyceprofile-qb_jprofile \
-                    -Dsonar.sources=src/ \
-                    -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                    -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
-                    -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/
-                    '''
-                    }
-                    timeout(time: 10, unit: 'MINUTES') {
-                        waitForQualityGate abortPipeline: true
-                    }
+                withSonarQubeEnv('sonar-pro') {
+                    sh '''
+                ${scannerHome}/bin/sonar-scanner \
+                -Dsonar.host.url=sonarcloud.io \
+                -Dsonar.login=credentials('sonarcloudCred') \
+                -Dsonar.organization=joyceprofile-qb \
+                -Dsonar.projectKey=joyceprofile-qb_jprofile \
+                -Dsonar.sources=src/ \
+                -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
+                -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/
+                '''
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
