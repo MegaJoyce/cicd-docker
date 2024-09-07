@@ -2,6 +2,7 @@
 FROM openjdk:17 AS BUILD_IMAGE
 
 # Install Maven
+RUN apt-get update && apt-get install apt-utils -y
 RUN apt-get update && apt-get install maven git -y
 
 # Clone the repository and build the project
