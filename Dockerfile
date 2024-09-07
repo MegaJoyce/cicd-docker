@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM openjdk:17 AS BUILD_IMAGE
+FROM openjdk:17-slim AS build_image
 
 # Install Maven
 RUN sudo apt update && sudo apt install maven git -y
