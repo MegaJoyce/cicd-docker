@@ -5,6 +5,11 @@ pipeline {
     environment {
         registry = "megajoyce/joyceprofile"
         registryCredential = "dockerhub"
+        // SonarCloud-specific variables
+        SONAR_TOKEN = credentials('sonarcloudCred') // Add your SonarCloud token in Jenkins credentials
+        SONAR_ORG = 'joyceprofile-qb'
+        SONAR_PROJECT_KEY = 'joyceprofile-qb_jprofile'
+        HOST_URL = 'https://sonarcloud.io'
     }
 
     stages{
@@ -45,23 +50,20 @@ pipeline {
         }
 
         stage('CODE ANALYSIS with SONARQUBE') {
-            environment {
-                scannerHome = tool 'mysonarscanner4'
-            }
             steps {
-                withSonarQubeEnv('sonar-pro') {
+                withSonarQubeEnv('sonar_cloud') { // 'sonar-pro' should be the name of the SonarCloud instance in Jenkins
                     sh '''
-                ${scannerHome}/bin/sonar-scanner \
-                -Dsonar.host.url=sonarcloud.io \
-                -Dsonar.login=credentials('sonarcloudCred') \
-                -Dsonar.organization=joyceprofile-qb \
-                -Dsonar.projectKey=joyceprofile-qb_jprofile \
-                -Dsonar.sources=src/ \
-                -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
-                -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/
-                '''
+                    mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+                    -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                    -Dsonar.organization=${SONAR_ORG} \
+                    -Dsonar.host.url=${HOST_URL} \
+                    -Dsonar.login=${SONAR_TOKEN}
+                    -Dsonar.sources=src/ \
+                    -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                    -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
+                    -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/
+                    '''
                 }
                 timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
