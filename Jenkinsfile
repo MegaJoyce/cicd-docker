@@ -49,7 +49,7 @@ pipeline {
                 scannerHome = tool 'mysonarscanner4'
             }
             steps {
-                steps {
+                step {
                     withSonarQubeEnv('sonar-pro') {
                         sh '''
                     ${scannerHome}/bin/sonar-scanner \
